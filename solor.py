@@ -26,6 +26,7 @@ def LoadTexture():
 class Solor(QOpenGLWidget):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
+        self.time = QTimer(self)
         self.view = np.array([-1, 1, -1, 1, 1.0, 20.0])
         self.perspective = True
         self.fovy = 60
@@ -65,9 +66,11 @@ class Solor(QOpenGLWidget):
         self.ATian = 0
         self.ShowHai = True
         self.AHai = 0
+        self.MouseX = 0
+        self.MouseY = 0
 
     def getposture(self):
-        """从笛卡尔坐标系变换到球坐标系 仅作示意"""
+        """从笛卡尔坐标系变换到球坐标系 仅作示意 不参与运算"""
         x, y, z = self.eye - self.lookat
         dist = np.sqrt(np.power((self.eye - self.lookat), 2).sum())
         phi = np.arcsin(y / dist)
@@ -80,7 +83,6 @@ class Solor(QOpenGLWidget):
 
         glClearColor(0, 0, 0, 1)
         LoadTexture()
-        self.time = QTimer(self)
         self.time.setInterval(100)
         self.time.timeout.connect(self.refresh)
         self.time.start()
@@ -122,12 +124,14 @@ class Solor(QOpenGLWidget):
             glPopMatrix()
         # 地球和月亮
         glPushMatrix()
-        self.draw_track(30)
+        if self.ShowEarth:
+            self.draw_track(30)
         glRotate(self.AEarth, 0, 0, 1)
         glTranslatef(30, 0, 0)
         if self.ShowEarth:
             self.earth(self.LineModel)
-        self.draw_track(4)
+        if self.ShowMoon:
+            self.draw_track(4)
         glRotate(self.AMoon, 0, 0, 1)
         glTranslatef(4, 0, 0)
         if self.ShowMoon:
@@ -273,7 +277,8 @@ class Solor(QOpenGLWidget):
         self.update()
 
     def draw_sph(self, LineModel=False):
-        if LineModel:
+        """绘制球体"""
+        if LineModel:  # 判断绘制方式
             glBegin(GL_LINES)
             for i in self.sph.points:
                 glVertex3f(i[0], i[1], i[2])

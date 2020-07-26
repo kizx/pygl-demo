@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-from PySide2.QtWidgets import *
-from PySide2.QtWidgets import QMenu
+from collections import namedtuple
+from math import *
+
+from OpenGL.GL import *
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QCursor
 from PySide2.QtGui import QKeySequence
-from OpenGL.GL import *
-from math import *
-from collections import namedtuple
+from PySide2.QtWidgets import *
+from PySide2.QtWidgets import QMenu
 
 
 class FLines(QOpenGLWidget):
@@ -25,13 +26,6 @@ class FLines(QOpenGLWidget):
         # 右键菜单
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.rightMenu)
-        # 快捷键
-        QShortcut(QKeySequence(Qt.Key_F1), self, lambda: self.RotF('F1'))
-        QShortcut(QKeySequence(Qt.Key_F2), self, lambda: self.RotF('F2'))
-        QShortcut(QKeySequence(Qt.Key_F3), self, lambda: self.RotF('F3'))
-        QShortcut(QKeySequence(Qt.Key_F4), self, lambda: self.RotF('F4'))
-
-    def rightMenu(self):
         self.contextMenu = QMenu(self)
         self.DD = self.contextMenu.addMenu('顶点个数')
         self.D4 = self.DD.addAction('4')
@@ -45,8 +39,6 @@ class FLines(QOpenGLWidget):
         self.YS1 = self.YS.addAction('绿色')
         self.YS2 = self.YS.addAction('黑色')
         self.YS3 = self.YS.addAction('白色')
-        self.contextMenu.popup(QCursor.pos(), None)  # 菜单显示的位置
-
         self.D4.triggered.connect(lambda: self.changeNum(4))
         self.D10.triggered.connect(lambda: self.changeNum(10))
         self.D20.triggered.connect(lambda: self.changeNum(20))
@@ -56,6 +48,14 @@ class FLines(QOpenGLWidget):
         self.YS1.triggered.connect(lambda: self.changeRGB([0, 255, 0]))
         self.YS2.triggered.connect(lambda: self.changeRGB([0, 0, 0]))
         self.YS3.triggered.connect(lambda: self.changeRGB([255, 255, 255]))
+        # 快捷键
+        QShortcut(QKeySequence(Qt.Key_F1), self, lambda: self.RotF('F1'))
+        QShortcut(QKeySequence(Qt.Key_F2), self, lambda: self.RotF('F2'))
+        QShortcut(QKeySequence(Qt.Key_F3), self, lambda: self.RotF('F3'))
+        QShortcut(QKeySequence(Qt.Key_F4), self, lambda: self.RotF('F4'))
+
+    def rightMenu(self):
+        self.contextMenu.popup(QCursor.pos(), None)  # 菜单显示的位置
 
     def initializeGL(self):
         glClearColor(0.3, 0.3, 0.6, 1)  # 背景色

@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'mainwindow.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.14.2
+## Created by: Qt User Interface Compiler version 5.15.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -588,6 +588,7 @@ class Ui_MainWindow(object):
 
         self.stop = QPushButton(self.groupBox_5)
         self.stop.setObjectName(u"stop")
+        self.stop.setMinimumSize(QSize(0, 38))
 
         self.verticalLayout_6.addWidget(self.stop)
 
@@ -611,7 +612,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 749, 21))
+        self.menubar.setGeometry(QRect(0, 0, 749, 23))
         self.menu = QMenu(self.menubar)
         self.menu.setObjectName(u"menu")
         self.menu_2 = QMenu(self.menubar)
